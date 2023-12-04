@@ -1,0 +1,30 @@
+{
+  "name": "mothers-dining",
+  "version": "1.0.0",
+  "description": "This is the restaurant app.  This app can help users to Book table for them for hotel dining or to order food online for home delivery.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sammed7/Mothers-Dining.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sammed7/Mothers-Dining/issues"
+  },
+  "homepage": "https://github.com/Sammed7/Mothers-Dining#readme",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^8.0.2",
+    "node": "^21.2.0",
+    "punycode": "^2.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
