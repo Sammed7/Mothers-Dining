@@ -13,14 +13,14 @@ connectDb()
 
 const PORT = process.env.PORT || 5000
 
-// Listen on port
-app.listen(PORT, () => {
-    console.log(`Server started on port ${PORT} In ${process.env.NODE_ENV} mode.`)
-});
-
 // Dummy route
 app.get('/', (req, res) => {
     res.send({
         message: "First route"
     })
 })
+
+// Listen on port
+app.listen(PORT, () => {
+    console.log(`Server started on port ${PORT} In ${process.env.NODE_ENV} mode.`)
+});
