@@ -4,6 +4,7 @@ const connectDb = require('./config/dbConnection')
 
 // Create instance of express
 const app = express()
+const PORT = process.env.PORT || 5000
 
 // Setting up the .env file configs
 dotenv.config({ path : './config/.env' })
@@ -11,14 +12,10 @@ dotenv.config({ path : './config/.env' })
 // Calling connectdb function
 connectDb()
 
-const PORT = process.env.PORT || 5000
+app.use(express.json())
 
 // Dummy route
-app.get('/', (req, res) => {
-    res.send({
-        message: "First route"
-    })
-})
+app.use('/api', require('./routes/userRoutes'))
 
 // Listen on port
 app.listen(PORT, () => {
