@@ -50,8 +50,10 @@ const signUp = asyncHandler(async (req,res) => {
         })
     }
     else {
-        res.status(400)
-        throw new Error('Invalid user data')
+        res.status(400).json({
+            statue: "Failed",
+            message: "Invalid user data."
+        })
     }
 })
 
