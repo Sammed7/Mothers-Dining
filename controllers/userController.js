@@ -57,6 +57,42 @@ const signUp = asyncHandler(async (req,res) => {
     }
 })
 
+//log in user 
+const logIn =  asyncHandler(async(req,res) => {
+    const {email, password} = req.body
+
+    if(!email || !password){
+        res.status(400).json({
+         message : "please enter all the required fields."
+        }) 
+     }
+
+    const user = await User.findOne({email})
+    if(!user){
+        res.status(400).json({
+            message : "User not found"
+        }) 
+    }
+    console.log("password", password)
+    const DBpassword = await user.password
+    console.log("dbpass", DBpassword)
+    console.log(await bcrypt.compare(password, DBpassword))
+
+    if(user && (await bcrypt.compare(password, DBpassword))){
+        res.status(200).json({
+            Status : "success",
+            name: user.name,
+            email: user.email,
+        })
+    }
+    else{
+        res.status(400).json({
+            Status : "Failed",
+            message: "Invalid credentials"
+        })
+    }
+})
+
 const getUsers =  asyncHandler(async(req,res) => {
     const users = await User.find()
     res.status(200).json({
@@ -66,5 +102,6 @@ const getUsers =  asyncHandler(async(req,res) => {
 
 module.exports = {
     signUp,
-    getUsers
+    getUsers,
+    logIn
 }
