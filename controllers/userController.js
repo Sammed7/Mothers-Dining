@@ -73,10 +73,7 @@ const logIn =  asyncHandler(async(req,res) => {
             message : "User not found"
         }) 
     }
-    console.log("password", password)
     const DBpassword = await user.password
-    console.log("dbpass", DBpassword)
-    console.log(await bcrypt.compare(password, DBpassword))
 
     if(user && (await bcrypt.compare(password, DBpassword))){
         res.status(200).json({
