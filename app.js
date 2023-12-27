@@ -16,6 +16,7 @@ app.use(express.json())
 
 // Dummy route
 app.use('/api', require('./routes/userRoutes'))
+app.use('/api', require('./routes/menuRoutes'))
 
 // Listen on port
 app.listen(PORT, () => {
