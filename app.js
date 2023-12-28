@@ -1,24 +1,26 @@
-const express = require('express')
-const dotenv = require('dotenv')
-const connectDb = require('./config/dbConnection')
+const express = require("express");
+const dotenv = require("dotenv");
+const connectDb = require("./config/dbConnection");
 
 // Create instance of express
-const app = express()
-const PORT = process.env.PORT || 5000
+const app = express();
+const PORT = process.env.PORT || 5000;
 
 // Setting up the .env file configs
-dotenv.config({ path : './config/.env' })
+dotenv.config({ path: "./config/.env" });
 
 // Calling connectdb function
-connectDb()
+connectDb();
 
-app.use(express.json())
+app.use(express.json());
 
 // Dummy route
-app.use('/api', require('./routes/userRoutes'))
-app.use('/api', require('./routes/menuRoutes'))
+app.use("/api", require("./routes/userRoutes"));
+app.use("/api", require("./routes/menuRoutes"));
 
 // Listen on port
 app.listen(PORT, () => {
-    console.log(`Server started on port ${PORT} In ${process.env.NODE_ENV} mode.`)
+  console.log(
+    `Server started on port ${PORT} In ${process.env.NODE_ENV} mode.`
+  );
 });
