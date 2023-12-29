@@ -56,7 +56,10 @@ const signUp = asyncHandler(async (req, res) => {
   }
 });
 
-//log in user
+/*
+ This handler handles user login.
+ send POST Request at /api/logIn
+*/
 const logIn = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -91,6 +94,10 @@ const logIn = asyncHandler(async (req, res) => {
   }
 });
 
+/*
+ This handler gives current user information.
+ send POST Request at /api/logIn
+*/
 const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find();
   res.status(200).json({
