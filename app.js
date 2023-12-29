@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const connectDb = require("./config/dbConnection");
+const { errorHandler } = require("./middleware/errorMiddleware");
 
 // Create instance of express
 const app = express();
@@ -17,6 +18,8 @@ app.use(express.json());
 // Dummy route
 app.use("/api", require("./routes/userRoutes"));
 app.use("/api", require("./routes/menuRoutes"));
+
+app.use(errorHandler);
 
 // Listen on port
 app.listen(PORT, () => {

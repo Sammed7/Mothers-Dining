@@ -1,13 +1,9 @@
 const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-//  All the routes related to user are present here.
-
-/*
- This handler handles user registration.
- send POST Request at /api/signUp
-*/
+// signUp user and save the details
 const signUp = asyncHandler(async (req, res) => {
   const { name, email, password, confirm_password } = req.body;
 
@@ -37,7 +33,7 @@ const signUp = asyncHandler(async (req, res) => {
   // hash the password with 10 digit
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  // create user and store in db.
+  // create user
   const user = await User.create({
     name,
     email,
@@ -73,8 +69,9 @@ const logIn = asyncHandler(async (req, res) => {
     });
   }
 
-  // check for user in db.
   const user = await User.findOne({ email });
+  const Token = genrateToken(user._id);
+
   if (!user) {
     res.status(400).json({
       message: "User not found",
@@ -87,6 +84,7 @@ const logIn = asyncHandler(async (req, res) => {
       Status: "success",
       name: user.name,
       email: user.email,
+      token: Token,
     });
   } else {
     res.status(400).json({
@@ -106,6 +104,13 @@ const getUsers = asyncHandler(async (req, res) => {
     users,
   });
 });
+
+//Genrate JWT
+const genrateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "1m",
+  });
+};
 
 module.exports = {
   signUp,
