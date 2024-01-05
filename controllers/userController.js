@@ -1,7 +1,7 @@
 const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 
 // signUp user and save the details
 const signUp = asyncHandler(async (req, res) => {
@@ -70,7 +70,7 @@ const logIn = asyncHandler(async (req, res) => {
   }
 
   const user = await User.findOne({ email });
-  const Token = genrateToken(user._id);
+  // const Token = genrateToken(user._id);
 
   if (!user) {
     res.status(400).json({
@@ -80,11 +80,18 @@ const logIn = asyncHandler(async (req, res) => {
   const DBpassword = await user.password;
 
   if (user && (await bcrypt.compare(password, DBpassword))) {
+
+    req.session.user = {
+      userEmail: user.email,
+      // other user details
+    };
+    console.log("req.session.user", req.session.user)
+
     res.status(200).json({
       Status: "success",
       name: user.name,
       email: user.email,
-      token: Token,
+      // token: Token,
     });
   } else {
     res.status(400).json({
@@ -105,15 +112,27 @@ const getUsers = asyncHandler(async (req, res) => {
   });
 });
 
-//Genrate JWT
-const genrateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "1m",
+// logout api
+const Logout = asyncHandler(async (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.status(200).json('Logged out successfully');
   });
-};
+})
+
+
+//Genrate JWT
+// const genrateToken = (id) => {
+//   return jwt.sign({ id }, process.env.JWT_SECRET, {
+//     expiresIn: "1m",
+//   });
+// };
 
 module.exports = {
   signUp,
   getUsers,
   logIn,
+  Logout
 };
