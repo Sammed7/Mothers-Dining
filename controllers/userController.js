@@ -80,6 +80,12 @@ const logIn = asyncHandler(async (req, res) => {
   const DBpassword = await user.password;
 
   if (user && (await bcrypt.compare(password, DBpassword))) {
+
+    req.session.user = {
+      userId: user._id,
+      // other user details
+    };
+
     res.status(200).json({
       Status: "success",
       name: user.name,
