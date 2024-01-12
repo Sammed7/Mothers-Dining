@@ -1,6 +1,3 @@
-// const express = require("express");
-// const asyncHandler = require("express-async-handler");
-
 const isAuthenticated = (req, res, next) => {
     console.log("inside isAuthenticated")
   if (req.session && req.session.user) {

@@ -1,7 +1,6 @@
 const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
-// const jwt = require("jsonwebtoken");
 
 // signUp user and save the details
 const signUp = asyncHandler(async (req, res) => {
@@ -70,7 +69,6 @@ const logIn = asyncHandler(async (req, res) => {
   }
 
   const user = await User.findOne({ email });
-  // const Token = genrateToken(user._id);
 
   if (!user) {
     res.status(400).json({
@@ -91,7 +89,6 @@ const logIn = asyncHandler(async (req, res) => {
       Status: "success",
       name: user.name,
       email: user.email,
-      // token: Token,
     });
   } else {
     res.status(400).json({
@@ -113,6 +110,10 @@ const getUsers = asyncHandler(async (req, res) => {
 });
 
 // logout api
+/*
+ This handler logs out the current logged in user.
+ send POST Request at /api/logout
+*/
 const Logout = asyncHandler(async (req, res) => {
   req.session.destroy((err) => {
     if (err) {
@@ -121,14 +122,6 @@ const Logout = asyncHandler(async (req, res) => {
     res.status(200).json('Logged out successfully');
   });
 })
-
-
-//Genrate JWT
-// const genrateToken = (id) => {
-//   return jwt.sign({ id }, process.env.JWT_SECRET, {
-//     expiresIn: "1m",
-//   });
-// };
 
 module.exports = {
   signUp,
