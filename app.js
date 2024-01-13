@@ -1,7 +1,11 @@
 const express = require("express");
+const session = require('express-session')
 const dotenv = require("dotenv");
 const connectDb = require("./config/dbConnection");
 const { errorHandler } = require("./middleware/errorMiddleware");
+const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo')
+
 
 // Create instance of express
 const app = express();
@@ -14,6 +18,15 @@ dotenv.config({ path: "./config/.env" });
 connectDb();
 
 app.use(express.json());
+
+// session handling
+app.use(session({
+  secret: process.env.SECRET_KEY,
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+  cookie: { maxAge: 10 * 60 * 1000 } // Session expiration time in milliseconds (1 minute in this example)
+}));
 
 // Dummy route
 app.use("/api", require("./routes/userRoutes"));
