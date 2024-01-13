@@ -12,6 +12,14 @@ const userSchema = mongoose.Schema({
     type: String,
     validate: [validator.isEmail, "Please enter correct email"],
   },
+  phone:{
+    type: Number,
+    required: true,
+    validate: {
+      validator: (value) => value.toString().length === 10, // Enforce exactly 10 characters
+      message: 'Phone number must be exactly 10 characters long',
+    },
+  },
   password: {
     type: String,
     required: [true, "Please enter password"],

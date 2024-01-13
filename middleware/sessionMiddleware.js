@@ -1,7 +1,6 @@
 const isAuthenticated = (req, res, next) => {
-    console.log("inside isAuthenticated")
   if (req.session && req.session.user) {
-    console.log("inside isAuthenticated if")
+    console.log("Passed from Authentication")
     return next();
   } else {
     res.status(200).json({
