@@ -80,7 +80,7 @@ const logIn = asyncHandler(async (req, res) => {
   if (user && (await bcrypt.compare(password, DBpassword))) {
 
     req.session.user = {
-      userEmail: user.email,
+      userId: user._id,
       // other user details
     };
     console.log("req.session.user", req.session.user)

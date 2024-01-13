@@ -31,6 +31,7 @@ app.use(session({
 // Dummy route
 app.use("/api", require("./routes/userRoutes"));
 app.use("/api", require("./routes/menuRoutes"));
+app.use("/api", require("./routes/cartRoutes"));
 
 app.use(errorHandler);
 
