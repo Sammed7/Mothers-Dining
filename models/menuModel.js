@@ -7,6 +7,10 @@ const menuSchema = mongoose.Schema({
     required: [true, "Please enter name."],
     trim: true,
   },
+  img_url: {
+    type: String,
+    required: [true, "Please add image url."],
+  },
   category: {
     type: String,
     required: [true, "Please enter category."],

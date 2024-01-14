@@ -7,26 +7,21 @@ const signUp = asyncHandler(async (req, res) => {
   const { name, email, password, confirm_password, phone } = req.body;
 
   if (!name || !email || !password || !confirm_password || !phone) {
-    res.status(400).json({
-      message: "please enter all the required fields.",
-    });
+    res.status(400)
+    throw new Error('please enter all the required fields.')
   }
 
   // check if user already exists
   const userExists = await User.findOne({ email });
   if (userExists) {
-    res.status(400).json({
-      status: "failed",
-      message: "User already exists.",
-    });
+    res.status(400)
+    throw new Error('User already exists.')
   }
 
   // check if password amd confirm password matches
   if (password !== confirm_password) {
-    res.status(400).json({
-      status: "failed",
-      message: "Password and confirm password dosen't match.",
-    });
+    res.status(400)
+    throw new Error('Password and confirm password dose not match')
   }
 
   // hash the password with 10 digit
@@ -74,7 +69,7 @@ const logIn = asyncHandler(async (req, res) => {
 
   if (!user) {
     res.status(400).json({
-      message: "User not found",
+      message: "User not found, Please check credentials.",
     });
   }
   const DBpassword = await user.password;
@@ -107,9 +102,12 @@ const logIn = asyncHandler(async (req, res) => {
 */
 const getUserProfile = asyncHandler(async (req, res) => {
   const id = req.session.user.userId;
-  const users = await User.findById( id );
+  const user = await User.findById( id );
   res.status(200).json({
-    users,
+    Status: "success",
+    name: user.name,
+    email: user.email,
+    phone: user.phone
   });
 });
 
@@ -122,8 +120,10 @@ const getUserProfile = asyncHandler(async (req, res) => {
 const Logout = asyncHandler(async (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-        return res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500)
+        throw new Error('Internal Server Error')
     }
+    res.clearCookie('connect.sid'); // Clear the session cookie
     res.status(200).json('Logged out successfully');
   });
 })
