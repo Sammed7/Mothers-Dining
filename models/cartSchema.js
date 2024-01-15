@@ -24,4 +24,9 @@ const cartSchema = new mongoose.Schema({
   ],
 });
 
+// Virtual property to calculate the total value for each item
+cartSchema.virtual('itemsTotalValue').get(function () {
+  return this.items.map(item => item.menuItem.price * item.quantity);
+});
+
 module.exports = mongoose.model('Cart', cartSchema);

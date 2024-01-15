@@ -23,7 +23,7 @@ const addToCart = asyncHandler( async(req, res) => {
             existingItem.quantity += 1;
         } else {
             // If the item doesn't exist, add it to the cart
-            cart.items.push({ menuItem: menuItemId });
+            cart.items.push({ menuItem: menuItemId });  
         }
 
         await cart.save();
@@ -31,7 +31,8 @@ const addToCart = asyncHandler( async(req, res) => {
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
+        res.status(500)
+        throw new Error('Internal Server Error, Please try to log in')
     }
 })
 
@@ -43,13 +44,26 @@ const getCartItems = asyncHandler( async (req, res) => {
       const cart = await Cart.findOne({ user: userId }).populate('items.menuItem');
   
       if (!cart) {
-        return res.json({ success: true, items: [] });
+        return res.json({ success: true, items: [], totalCartValue: 0 });
       }
+
+      // Calculate total value for each item using the virtual property
+        const itemsWithTotalValue = cart.items.map(item => ({
+            menuItem: item.menuItem.name,
+            quantity: item.quantity,
+            price:item.menuItem.price,
+            totalPrice: item.menuItem.price * item.quantity,
+            _id: item._id,  
+        }));
+    
+    // Calculate total sum of all items in the cart
+    const totalCartValue = cart.items.reduce((sum, item) => sum + item.menuItem.price * item.quantity, 0);    
   
-      res.json({ success: true, items: cart.items });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
+    res.json({ success: true, items: itemsWithTotalValue, totalCartValue });
+    } 
+    catch (error) {
+        res.status(500)
+        throw new Error('Please login to check items in your cart.')
     }
 });
 
