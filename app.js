@@ -28,6 +28,15 @@ app.use(session({
   cookie: { maxAge: 10 * 60 * 1000 } // Session expiration time in milliseconds (1 minute in this example)
 }));
 
+//Session refresh if user is active
+app.use((req, res, next) => {
+  if (req.session) {
+    // Update the session's expiration time to prevent it from expiring
+    req.session.touch();
+  }
+  next();
+});
+
 // Dummy route
 app.use("/api", require("./routes/userRoutes"));
 app.use("/api", require("./routes/menuRoutes"));

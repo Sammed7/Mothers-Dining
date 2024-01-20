@@ -3,9 +3,8 @@ const isAuthenticated = (req, res, next) => {
     console.log("Passed from Authentication")
     return next();
   } else {
-    res.status(200).json({
-        message: "Not authenticated"
-    })
+    res.status(400)
+    throw new Error("Not authenticated")
     // res.redirect("/login"); // Redirect to login page if not authenticated
   }
 };

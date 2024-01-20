@@ -20,6 +20,11 @@ const userSchema = mongoose.Schema({
       message: 'Phone number must be exactly 10 characters long',
     },
   },
+  role: {
+     type: String, 
+     enum: ['user', 'admin'], 
+     default: 'user' 
+  },
   password: {
     type: String,
     required: [true, "Please enter password"],

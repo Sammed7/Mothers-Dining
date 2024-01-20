@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 
 // signUp user and save the details
 const signUp = asyncHandler(async (req, res) => {
-  const { name, email, password, confirm_password, phone } = req.body;
+  const { name, email, password, confirm_password, phone, role } = req.body;
 
   if (!name || !email || !password || !confirm_password || !phone) {
     res.status(400)
@@ -32,7 +32,8 @@ const signUp = asyncHandler(async (req, res) => {
     name,
     email,
     password: hashedPassword,
-    phone
+    phone,
+    role
   });
 
   if (user) {
@@ -43,6 +44,7 @@ const signUp = asyncHandler(async (req, res) => {
       email: user.email,
       phone:user.phone,
       password: user.password,
+      role: user.role
     });
   } else {
     res.status(400).json({
@@ -78,7 +80,7 @@ const logIn = asyncHandler(async (req, res) => {
 
     req.session.user = {
       userId: user._id,
-      // other user details
+      userRole: user.role
     };
     console.log("req.session.user", req.session.user)
 

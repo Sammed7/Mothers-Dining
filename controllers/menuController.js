@@ -5,6 +5,7 @@ const asyncHandler = require("express-async-handler");
 
 /*
  This handler handles creating menu items in db.
+ only Admin can access this API
  send POST Request at /api/menu
 */
 const createMenuItem = asyncHandler(async (req, res) => {
@@ -21,6 +22,30 @@ const createMenuItem = asyncHandler(async (req, res) => {
   } catch (err) {
     res.status(400).json({ status: "fail", message: err.message });
   }
+});
+
+/*
+ This handler handles delete menu items in db.
+ only Admin can access this API
+ send delete Request at /api/menu
+*/
+const deleteMenuItem = asyncHandler(async (req, res) => {
+
+  try {
+    const { menuItemId } = req.body;
+    const item = await Menu.findById( menuItemId )
+    if(!item){
+      res.status(400)
+      throw new Error('Item not present in your list, Please check your ID again')
+    }
+
+    await item.deleteOne()
+    res.status(200).json({message: "Item deleted successfully."})
+
+  } catch (err) {
+    res.status(400).json({ status: "fail", message: err.message });
+  }
+
 });
 
 /*
@@ -55,4 +80,5 @@ module.exports = {
   createMenuItem,
   getAllMenuItems,
   getMenuItemsBycategory,
+  deleteMenuItem
 };
