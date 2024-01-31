@@ -30,7 +30,7 @@ const signUp = asyncHandler(async (req, res) => {
   const user = await User.create({
     name,
     email,
-    password,
+    password: hashedPassword,
     phone,
     role
   });
