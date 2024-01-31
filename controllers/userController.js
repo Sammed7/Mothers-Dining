@@ -4,9 +4,9 @@ const bcrypt = require("bcrypt");
 
 // signUp user and save the details
 const signUp = asyncHandler(async (req, res) => {
-  const { name, email, password, confirm_password, phone, role } = req.body;
+  const { name, email, password, phone, role, adminKey} = req.body;
 
-  if (!name || !email || !password || !confirm_password || !phone) {
+  if (!name || !email || !password || !phone) {
     res.status(400)
     throw new Error('please enter all the required fields.')
   }
@@ -18,10 +18,9 @@ const signUp = asyncHandler(async (req, res) => {
     throw new Error('User already exists.')
   }
 
-  // check if password amd confirm password matches
-  if (password !== confirm_password) {
+  if(role == "admin" && adminKey !== process.env.admin_secret_key){
     res.status(400)
-    throw new Error('Password and confirm password dose not match')
+    throw new Error('Invalid admin key.')
   }
 
   // hash the password with 10 digit
@@ -85,7 +84,8 @@ const logIn = asyncHandler(async (req, res) => {
     console.log("req.session.user", req.session.user)
 
     res.status(200).json({
-      Status: "success",
+      status: "success",
+      userId: user._id,
       name: user.name,
       email: user.email,
     });
