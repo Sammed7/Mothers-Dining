@@ -32,7 +32,7 @@ const createMenuItem = asyncHandler(async (req, res) => {
 const deleteMenuItem = asyncHandler(async (req, res) => {
 
   try {
-    const { menuItemId } = req.body;
+    const { menuItemId } = req.params;
     const item = await Menu.findById( menuItemId )
     if(!item){
       res.status(400)

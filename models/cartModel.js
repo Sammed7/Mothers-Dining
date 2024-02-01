@@ -1,5 +1,3 @@
-// models/cart.js
-
 const mongoose = require('mongoose');
 const user = require('./userModel');
 

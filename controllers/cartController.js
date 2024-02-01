@@ -1,6 +1,15 @@
 const Menu = require('../models/menuModel')
-const Cart = require('../models/cartSchema')
+const Cart = require('../models/cartModel')
 const asyncHandler = require("express-async-handler");
+const OrderHistory = require('../models/orderHistoryModel');
+
+
+class CustomError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'CustomError';
+    }
+}
 
 // Add items to cart
 const addToCart = asyncHandler( async(req, res) => {
@@ -67,7 +76,69 @@ const getCartItems = asyncHandler( async (req, res) => {
     }
 });
 
+const placeOrder = asyncHandler( async (req, res) => {
+    const userId = req.session.user.userId
+
+    try {
+        const cart = await Cart.findOne({ user: userId }).populate('items.menuItem');
+        console.log("cart.length", cart.items.length)
+
+        if(cart.items.length == 0) {
+            res.status(400)
+            throw new CustomError('There is no items in your cart.')
+        }
+
+        const itemsWithTotalValue = cart.items.map(item => ({
+            menuItem: item.menuItem.name,
+            quantity: item.quantity,
+            price:item.menuItem.price,
+            totalPrice: item.menuItem.price * item.quantity,
+        }));
+
+        // Add items in order history
+        const order = new OrderHistory({
+            user: userId,
+            items: itemsWithTotalValue
+        })
+
+        await order.save()
+
+        // Remove cart items
+        await Cart.findOneAndUpdate({ user: userId }, {$set: {items: [] } });
+
+        res.status(200).json({
+            status: "success",
+            message: "Order placed successfully."
+        })
+    } catch (error) {
+        if (error instanceof CustomError) {
+            res.status(400)
+            throw new Error(error.message);
+        } else {
+            res.status(400)
+            throw new Error(error.message);
+        }
+    }
+})
+
+const orderHistoty = asyncHandler( async(req, res)=> {
+    const userId = req.session.user.userId
+
+    
+    const orderHistory = await OrderHistory.find({ user: userId }).sort({ createdAt: -1 });
+    console.log("orderHistory", orderHistory)
+
+    if(orderHistory.length == 0) {
+        res.status(500)
+        throw new Error('opps! no order history availale.')
+    }
+    
+    res.status(200).json(orderHistory);
+})
+
 module.exports = {
     addToCart,
-    getCartItems
+    getCartItems,
+    placeOrder,
+    orderHistoty
 }
