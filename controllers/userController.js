@@ -80,7 +80,6 @@ const logIn = asyncHandler(async (req, res) => {
       userId: user._id,
       userRole: user.role
     };
-    console.log("req.session.user", req.session.user)
 
     res.status(200).json({
       status: "success",

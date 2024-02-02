@@ -33,6 +33,10 @@ const menuSchema = mongoose.Schema({
   TotalRating: {
     type: Number,
   },
+  menu_type:{
+    type: String,
+    required: [true, "Please enter type of menu iteam veg or non-veg."],
+  }
 });
 
 module.exports = mongoose.model("Menu", menuSchema);
