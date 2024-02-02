@@ -37,7 +37,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Dummy route
+// routes
 app.use("/api", require("./routes/userRoutes"));
 app.use("/api", require("./routes/menuRoutes"));
 app.use("/api", require("./routes/cartRoutes"));

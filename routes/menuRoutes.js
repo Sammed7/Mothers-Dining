@@ -10,7 +10,7 @@ const {
 } = require("../controllers/menuController");
 
 router.post("/menu",isAdmin, createMenuItem);
-router.delete("/menu",isAdmin, deleteMenuItem);
+router.delete("/menu/:menuItemId",isAdmin, deleteMenuItem);
 router.get("/menu", getAllMenuItems);
 router.get("/menu/:category", getMenuItemsBycategory);
 
