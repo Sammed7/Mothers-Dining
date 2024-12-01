@@ -1,8 +1,34 @@
 
-# Mother's Dining API's
+# Mother's Dining
 
-This is the restaurant app. 
-This app can help users to Book table for them for hotel dining or to order food online for home delivery.
+Mother's Dining is a restaurant management application designed to streamline table reservations, online food orders, and efficient user management. This repository provides backend functionality with RESTful APIs for managing users, orders, and dining experiences.
+
+## Features
+#### User Authentication:
+* Secure registration and login with JWT-based authentication.
+* Manage user profiles.
+
+#### Menu Management:
+* Browse available menus.
+* Filter items by categories.
+
+#### Table Reservation:
+* Book tables for in-house dining.
+* View reservation details.
+
+#### Online Food Ordering:
+* Place orders for home delivery.
+* Track order status.
+
+#### Admin Features:
+* Manage menus, orders, and reservations.
+* Generate analytics and reports.
+
+#### Technologies Used
+* Backend: Node.js, Express.js
+* Database: MongoDB
+* Authentication: JWT (JSON Web Tokens)
+* Others: Middleware for input validation and error handling
 
 ## API Endpoints
 
