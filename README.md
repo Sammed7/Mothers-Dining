@@ -33,29 +33,46 @@ Mother's Dining is a restaurant management application designed to streamline ta
 
 ## API Endpoints
 
+### User APIs
 
 #### Register/ Sign-up
 
-```http
-  GET /api/register
+**GET** /api/register
+
+**Request Body**:
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "password123"
+}
 ```
-
-| Parameter | Type     | Required*                |
-| :-------- | :------- | :------------------------- |
-| `Name` | `string` | **True**. |
-| `Email` | `string` | **True**. |
-| `Password` | `string` | **True**. |
-
+**Responce**:
+```json
+{
+  "message": "User registered successfully",
+  "userId": "12345"
+}
+```
 #### Login
 
-```http
-  GET /api/Login
+  **GET** /api/Login
+
+**Request Body**:
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "password123"
+}
 ```
 
-| Parameter | Type     | Required*                       |
-| :-------- | :------- | :-------------------------------- |
-| `Email` | `string` | **True**. |
-| `Password` | `string` | **True**. |
+**Responce**:
+```json
+{
+  "message": "Login successful!",
+}
+```
 
 #### Profile
 
