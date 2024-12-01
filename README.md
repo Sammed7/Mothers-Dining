@@ -6,6 +6,7 @@ Mother's Dining is a restaurant management application designed to streamline ta
 ## Features
 #### User Authentication:
 * Secure registration and login with JWT-based authentication.
+* Role based authentication.
 * Manage user profiles.
 
 #### Menu Management:
